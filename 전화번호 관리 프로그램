@@ -1,0 +1,97 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct {
+	char name[30];
+	char number[30];
+}TEL;
+
+void List(TEL** tel, int num, int* size);
+void insert(TEL** tel, int* size);
+void delete(TEL** tel, int* size);
+void search(TEL* tel, int* size);
+void printall(TEL* tel, int* size);
+
+int main(void) {
+	int size = 0;
+	int num;
+	TEL* tel = NULL;
+	while (1) {
+		scanf("%d", &num);
+		if (num == 5) {
+			break;
+		}
+		List(&tel, num, &size);
+	}
+	free(tel);
+	return 0;
+}
+
+void List(TEL** tel, int num, int* size) {
+	switch (num) {
+	case 1:
+		insert(tel, size);
+		break;
+	case 2:
+		delete(tel, size);
+		break;
+	case 3:
+		search(*tel, size);
+		break;
+	case 4:
+		printall(*tel, size);
+		break;
+	}
+}
+void insert(TEL** tel, int* size) {
+	(*size)++;
+	*tel = (TEL*)realloc(*tel, sizeof(TEL) * (*size));
+	printf("Input Name: ");
+	scanf("%s", (*tel)[(*size) - 1].name);
+	printf("Input Tel Number: ");
+	scanf("%s", (*tel)[(*size) - 1].number);
+	printf("\t\tData Inserted\n");
+}
+void delete(TEL** tel, int* size) {
+	char name[30];
+	printf("Input Name: ");
+	scanf("%s", name);
+	for (int i = 0; i < *size; i++) {
+		if (!strcmp(name, (*tel)[i].name)) {
+			for (int j = i; j < (*size) - 1; j++) {
+				tel[j] = tel[j + 1];
+			}
+			break;
+		}
+	}
+	(*size)--;
+	*tel = (TEL*)realloc(*tel, sizeof(TEL) * (*size));
+	printf("\t\tData Deleted\n");
+}
+void search(TEL* tel, int* size) {
+	char name[30];
+	int flag = 1;
+	printf("Input Name: ");
+	scanf("%s", name);
+	for (int i = 0; i < *size; i++) {
+		if (!strcmp(name, tel[i].name)) {
+			printf("Name: %s\n", tel[i].name);
+			printf("Tel Number: %s\n", tel[i].number);
+			flag = 0;
+			break;
+		}
+	}
+	if (flag == 1) {
+		printf("Not Found\n");
+	}
+	printf("Search End\n");
+}
+void printall(TEL* tel, int* size) {
+	for (int i = 0; i < *size; i++) {
+		printf("Name: %s\t", tel[i].name);
+		printf("Tel Number: %s\n", tel[i].number);
+	}
+	printf("All print\n");
+}
