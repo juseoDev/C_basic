@@ -1,0 +1,108 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define TEXT "tel.txt"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct {
+	char name[30];
+	char number[30];
+}TEL;
+
+void List(FILE* fp, int num);
+void insert(FILE* fp);
+void delete(FILE* fp);
+void search(FILE* fp);
+void printall(FILE* fp);
+
+int main(void) {
+	int num;
+	FILE* fp = NULL;
+	while (1) {
+		scanf("%d", &num);
+		if (num == 5) {
+			break;
+		}
+		List(fp, num);
+	}
+	return 0;
+}
+
+void List(FILE* fp, int num) {
+	switch (num) {
+	case 1:
+		insert(fp);
+		break;
+	case 2:
+		delete(fp);
+		break;
+	case 3:
+		search(fp);
+		break;
+	case 4:
+		printall(fp);
+		break;
+	}
+}
+void insert(FILE* fp) {
+	char words[30];
+	fp = fopen(TEXT, "at");
+	printf("Input Name: ");
+	scanf("%s", words);
+	fprintf(fp, "%s", words);
+	printf("Input Tel Number: ");
+	scanf("%s", words);
+	fprintf(fp, "%s", words);
+	printf("\t\tData Inserted\n");
+	fclose(fp);
+}
+void delete(FILE* fp) {
+	/*char name[30];
+	char words[30];
+	long fpos;
+	printf("Input Name: ");
+	scanf("%s", name);
+	while (feof(fp) == 0) {
+		fpos = ftell(fp);
+		fscanf(fp, "%s", words);
+		if (!strcmp(words, name)) {
+			while (feof(fp) == 0) {
+				fscanf(fp, "%s", words);
+				fseek(fp, fpos, SEEK_SET);
+				fprintf(fp, "%s", words);
+
+			}
+			
+		}
+	}
+	(*size)--;
+	*tel = (TEL*)realloc(*tel, sizeof(TEL) * (*size));
+	printf("\t\tData Deleted\n");*/
+}
+void search(FILE* fp) {
+	char name[30];
+	char word[30];
+	char phone[30];
+	int flag = 1;
+	printf("Input Name: ");
+	scanf("%s", name);
+	fp = fopen(TEXT, "rt");
+	while (feof(fp) == 0) {
+		fscanf(fp, "%s", word);
+		if (!strcmp(word, name)) {
+			fscanf(fp, "%s %s", word, phone);
+			break;
+		}
+	}
+	printf("%s %s\n", word, phone);
+	printf("Search End\n");
+}
+void printall(FILE* fp) {
+	fp = fopen(TEXT, "rt");
+	char ch;
+	while (feof(fp) == 0) {
+		ch = fgetc(fp);
+		printf("%c");
+	}
+	printf("All print\n");
+}
